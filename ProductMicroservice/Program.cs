@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using ProductMicroservice.Data;
 using ProductMicroservice.Services;
 using ProductMicroservice.Services.Interface;
@@ -20,6 +21,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+DatabaseManagementService.MigrationInitialisation(app);
 
 app.UseHttpsRedirection();
 

@@ -1,24 +1,38 @@
 
 version: '3.5'
 services:
+  SqlServer:
+    image: mcr.microsoft.com/mssql/server
+    environment:
+      - ACCEPT_EULA=1
+      - MSSQL_SA_PASSWORD=MyPass@word
+      - MSSQL_PID=Developer
+      - MSSQL_USER=SA
+    ports:
+      - 1433:1433
+    container_name: SqlServer
   ProductService:
    image: ${DOCKER_REGISTRY-}producstmicroservice:v1
    build:
     context: ./ProductMicroservice
     dockerfile: Dockerfile
    environment:
-    - CONNECTIONSTRINGS__DEFAULTCONNECTION=Server=172.30.208.1,1433;Database=ProductServiceDB;User ID=sa;Password=MyPass@word;
+    - CONNECTIONSTRINGS__DEFAULTCONNECTION=Server=SqlServer;Database=ProductServiceDB;User ID=sa;Password=MyPass@word;
    ports:
     - "4201:80"
+   depends_on:
+    - SqlServer
   UserService:
    image: ${DOCKER_REGISTRY-}usersmicroservice:v1
    build:
     context: ./UserMicroservice
     dockerfile: Dockerfile
    environment:
-    - CONNECTIONSTRINGS__DEFAULTCONNECTION=Server=172.30.208.1,1433;Database=UserServiceDB;User ID=sa;Password=MyPass@word;
+    - CONNECTIONSTRINGS__DEFAULTCONNECTION=Server=SqlServer;Database=UserServiceDB;User ID=sa;Password=MyPass@word;
    ports:
     - "4202:80"
+   depends_on:
+    - SqlServer
   OcelotAPIGateway:
    image: ${DOCKER_REGISTRY-}ocelotapigateway:v1
    build:
