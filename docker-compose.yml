@@ -1,0 +1,21 @@
+
+version: '3.5'
+services:
+  ProductService:
+   image: ${DOCKER_REGISTRY-}producstmicroservice:v1
+   build:
+    context: ./ProductMicroservice
+    dockerfile: Dockerfile
+   environment:
+    - CONNECTIONSTRINGS__DEFAULTCONNECTION=Server=172.30.208.1,1433;Database=ProductServiceDB;User ID=sa;Password=MyPass@word;
+   ports:
+    - "4201:80"
+  UserService:
+   image: ${DOCKER_REGISTRY-}usersmicroservice:v1
+   build:
+    context: ./UserMicroservice
+    dockerfile: Dockerfile
+   environment:
+    - CONNECTIONSTRINGS__DEFAULTCONNECTION=Server=172.30.208.1,1433;Database=ProductServiceDB;User ID=sa;Password=MyPass@word;
+   ports:
+    - "4202:80"
