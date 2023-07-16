@@ -16,6 +16,13 @@ services:
     context: ./UserMicroservice
     dockerfile: Dockerfile
    environment:
-    - CONNECTIONSTRINGS__DEFAULTCONNECTION=Server=172.30.208.1,1433;Database=ProductServiceDB;User ID=sa;Password=MyPass@word;
+    - CONNECTIONSTRINGS__DEFAULTCONNECTION=Server=172.30.208.1,1433;Database=UserServiceDB;User ID=sa;Password=MyPass@word;
    ports:
     - "4202:80"
+  OcelotAPIGateway:
+   image: ${DOCKER_REGISTRY-}ocelotapigateway:v1
+   build:
+    context: ./OcelotAPIGateway
+    dockerfile: Dockerfile
+   ports:
+    - "7192:80"
